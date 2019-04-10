@@ -1,7 +1,7 @@
 # Личный проект «YetiCave»
 
 * Студент: [Дмитрий Герасимов](https://up.htmlacademy.ru/php/9/user/944599).
-* Наставник: `Неизвестно`.
+* Наставник: [Максим Деев](https://htmlacademy.ru/profile/id685777).
 
 ---
 
