@@ -3,9 +3,9 @@ $is_auth = rand(0, 1);
 
 $user_name = 'Дмитрий'; // укажите здесь ваше имя
 
-$cats = ['Доски и лыжи', 'Крепления', 'Ботинки', 'Одежда', 'Инструменты', 'Разное'];
+$categories = ['Доски и лыжи', 'Крепления', 'Ботинки', 'Одежда', 'Инструменты', 'Разное'];
 
-$ads =
+$adverts =
   [
         ['name' => '2014 Rossignol District Snowboard',
          'cat' => 'Доски и лыжи',
@@ -96,10 +96,10 @@ $ads =
         <p class="promo__text">На нашем интернет-аукционе ты найдёшь самое эксклюзивное сноубордическое и горнолыжное снаряжение.</p>
         <ul class="promo__list">
             <?php
-            foreach ($cats as $cat):
+            foreach ($categories as $category):
             ?>
             <li class="promo__item promo__item--boards">
-                <a class="promo__link" href="pages/all-lots.html"><?= $cat ?></a>
+                <a class="promo__link" href="pages/all-lots.html"><?= $category ?></a>
             </li>
             <?php
             endforeach;
@@ -112,7 +112,7 @@ $ads =
         </div>
         <ul class="lots__list">
             <?php
-            foreach ($ads as $ad => $key):
+            foreach ($adverts as $advert => $key):
             ?>
             <li class="lots__item lot">
                 <div class="lot__image">
@@ -144,10 +144,10 @@ $ads =
     <nav class="nav">
         <ul class="nav__list container">
             <?php
-            foreach ($cats as $cat):
+            foreach ($categories as $category):
             ?>
             <li class="nav__item">
-                <a href="pages/all-lots.html"><?= $cat ?></a>
+                <a href="pages/all-lots.html"><?= $category ?></a>
             </li>
             <?php
             endforeach;
