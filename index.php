@@ -8,32 +8,32 @@ $categories = ['Доски и лыжи', 'Крепления', 'Ботинки',
 $adverts =
   [
         ['name' => '2014 Rossignol District Snowboard',
-         'cat' => 'Доски и лыжи',
+         'category' => 'Доски и лыжи',
          'price' => '10999',
          'url' => 'img/lot-1.jpg',
         ],
         ['name' => 'DC Ply Mens 2016/2017 Snowboard',
-         'cat' => 'Доски и лыжи',
+         'category' => 'Доски и лыжи',
          'price' => '159999',
          'url' => 'img/lot-2.jpg',
         ],
         ['name' => 'Крепления Union Contact Pro 2015 года размер L/XL',
-         'cat' => 'Крепления',
+         'category' => 'Крепления',
          'price' => '8000',
          'url' => 'img/lot-3.jpg',
         ],
         ['name' => 'Ботинки для сноуборда DC Mutiny Charocal',
-         'cat' => 'Ботинки',
+         'category' => 'Ботинки',
          'price' => '10999',
          'url' => 'img/lot-4.jpg',
         ],
         ['name' => 'Куртка для сноуборда DC Mutiny Charocal',
-         'cat' => 'Одежда',
+         'category' => 'Одежда',
          'price' => '7500',
          'url' => 'img/lot-5.jpg',
         ],
         ['name' => 'Маска Oakley Canopy',
-         'cat' => 'Разное',
+         'category' => 'Разное',
          'price' => '5400',
          'url' => 'img/lot-6.jpg',
         ]
@@ -119,7 +119,7 @@ $adverts =
                     <img src="<?= $key['url'] ?>" width="350" height="260" alt="">
                 </div>
                 <div class="lot__info">
-                    <span class="lot__category"><?= $key['cat'] ?></span>
+                    <span class="lot__category"><?= $key['category'] ?></span>
                     <h3 class="lot__title"><a class="text-link" href="pages/lot.html"><?= $key['name'] ?></a></h3>
                     <div class="lot__state">
                         <div class="lot__rate">
