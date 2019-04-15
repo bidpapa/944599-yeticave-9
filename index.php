@@ -54,6 +54,7 @@ $adverts
 
 function formatNumber($number)
 {
+    $number = ceil($number);
     if ($number < 1000) {
         return $number . ' ₽';
     } else {
