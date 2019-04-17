@@ -33,8 +33,8 @@
                             <span class="lot__amount">Стартовая цена</span>
                             <span class="lot__cost"><?= formatNumber($key['price']) ?></span>
                         </div>
-                        <div class="lot__timer timer">
-                            12:23
+                        <div class="lot__timer timer <?php if(timeToEndLessOneHour($key['time'])): ?>timer--finishing<?php endif; ?>">
+                        <?= timeToEnd($key['time']) ?>
                         </div>
                     </div>
                 </div>
