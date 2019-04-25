@@ -61,7 +61,7 @@
             foreach ($categories as $category):
                 ?>
                 <li class="nav__item">
-                    <a href="pages/all-lots.html"><?= $category ?></a>
+                    <a href="pages/all-lots.html"><?= $category[1] ?></a>
                 </li>
             <?php
             endforeach;

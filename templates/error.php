@@ -1,0 +1,1 @@
+<strong>Ошибка: <?= $error ?></strong>
