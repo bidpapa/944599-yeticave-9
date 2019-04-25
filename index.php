@@ -6,60 +6,54 @@ $is_auth = rand(0, 1);
 
 $user_name = 'Дмитрий'; // укажите здесь ваше имя
 
-$categories = [
-  'Доски и лыжи',
-  'Крепления',
-  'Ботинки',
-  'Одежда',
-  'Инструменты',
-  'Разное',
-];
+$link = mysqli_connect('127.0.0.1', 'root', '', 'yeticave');
+mysqli_set_charset($link, 'utf8');
 
-$adverts
-  = [
-  [
-    'name'     => '2014 Rossignol District Snowboard',
-    'category' => 'Доски и лыжи',
-    'price'    => '10999',
-    'url'      => 'img/lot-1.jpg',
-    'time'     => 'tomorrow',
-  ],
-  [
-    'name'     => 'DC Ply Mens 2016/2017 Snowboard',
-    'category' => 'Доски и лыжи',
-    'price'    => '159999',
-    'url'      => 'img/lot-2.jpg',
-    'time'     => 'tomorrow',
-  ],
-  [
-    'name'     => 'Крепления Union Contact Pro 2015 года размер L/XL',
-    'category' => 'Крепления',
-    'price'    => '8000',
-    'url'      => 'img/lot-3.jpg',
-    'time'     => 'tomorrow',
-  ],
-  [
-    'name'     => 'Ботинки для сноуборда DC Mutiny Charocal',
-    'category' => 'Ботинки',
-    'price'    => '10999',
-    'url'      => 'img/lot-4.jpg',
-    'time'     => 'tomorrow',
-  ],
-  [
-    'name'     => 'Куртка для сноуборда DC Mutiny Charocal',
-    'category' => 'Одежда',
-    'price'    => '7500',
-    'url'      => 'img/lot-5.jpg',
-    'time'     => 'tomorrow',
-  ],
-  [
-    'name'     => 'Маска Oakley Canopy',
-    'category' => 'Разное',
-    'price'    => '5400',
-    'url'      => 'img/lot-6.jpg',
-    'time'     => 'tomorrow',
-  ],
-];
+if (!$link) {
+    showError(mysqli_connect_error());
+} else {
+    $sql = "SELECT * FROM category ORDER BY id";
+    $categories = returnArrayFromDB($link, $sql);
+
+    $sql
+      = "SELECT l.name, c.name AS category, l.start_price AS price, l.end_date AS time, l.image AS url
+FROM lot AS l INNER JOIN category AS c ON l.id_category = c.id WHERE l.end_date > NOW() ORDER BY l.creation_date DESC LIMIT 6";
+    $adverts = returnArrayFromDB($link, $sql, MYSQLI_ASSOC);
+
+    $content = include_template('index.php',
+      ['categories' => $categories, 'adverts' => $adverts]);
+    $layout_content = include_template('layout.php', [
+      'title'      => 'Главная',
+      'is_auth'    => $is_auth,
+      'user_name'  => $user_name,
+      'content'    => $content,
+      'categories' => $categories,
+    ]);
+
+}
+print($layout_content);
+
+function returnArrayFromDB($link, $sql, $fetch_type = MYSQLI_NUM)
+{
+    $stmt = mysqli_prepare($link, $sql);
+    mysqli_stmt_execute($stmt);
+    $rows = mysqli_stmt_get_result($stmt);
+    if($rows) {
+        $array = mysqli_fetch_all($rows, $fetch_type);
+        return $array;
+    }
+    else {
+        showError(mysqli_error($link));
+    }
+}
+
+function showError($error)
+{
+    $content = include_template('error.php', ['error' => $error]);
+    $layout_content = include_template('layout.php', ['content' => $content]);
+    print($layout_content);
+    die;
+}
 
 function formatNumber($number)
 {
@@ -77,7 +71,14 @@ function timeToEnd($end_time)
     $now = date_create();
     $end_time = date_create($end_time);
     $interval = date_diff($now, $end_time);
-    return $interval->format('%H:%I');
+    if ($interval->d > 0) {
+        $hours = $interval->h + ($interval->d * 24) . ':'
+          . $interval->format('%I');
+        return $hours;
+    }
+    else {
+        return $interval->format('%H:%I');
+    }
 }
 
 function timeToEndLessOneHour($end_time)
@@ -89,15 +90,3 @@ function timeToEndLessOneHour($end_time)
     }
     return false;
 }
-
-$content = include_template('index.php',
-  ['categories' => $categories, 'adverts' => $adverts]);
-$layout_content = include_template('layout.php', [
-  'title'      => 'Главная',
-  'is_auth'    => $is_auth,
-  'user_name'  => $user_name,
-  'content'    => $content,
-  'categories' => $categories,
-]);
-print($layout_content);
-
