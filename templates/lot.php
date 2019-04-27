@@ -27,10 +27,10 @@
                 <div class="lot-item__cost-state">
                     <div class="lot-item__rate">
                         <span class="lot-item__amount">Текущая цена</span>
-                        <span class="lot-item__cost"><?= formatNumber($lot_info['max']) ?></span>
+                        <span class="lot-item__cost"><?= formatNumber($lot_info['price']) ?></span>
                     </div>
                     <div class="lot-item__min-cost">
-                        Мин. ставка <span><?= formatNumber($lot_info['max']+$lot_info['bid_step']) ?></span>
+                        Мин. ставка <span><?= formatNumber($lot_info['price']+$lot_info['bid_step']) ?></span>
                     </div>
                 </div>
                 <!--<form class="lot-item__form"

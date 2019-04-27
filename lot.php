@@ -11,12 +11,13 @@ $categories = returnArrayFromDB($link, $sql);
 if (isset($_GET['id']) && $_GET['id'] > 0) {
     $id = intval($_GET['id']);
     $sql
-      = "SELECT l.name, l.description, l.image, l.bid_step, l.end_date AS time, c.name AS category_name, b.max
+      = "SELECT l.name, l.description, l.image, l.bid_step, l.end_date AS time, c.name AS category_name, l.start_price AS price, b.max
     FROM lot AS l
     INNER JOIN category AS c ON l.id_category = c.id
-    INNER JOIN (SELECT id_lot, MAX(amount) AS max FROM bid GROUP BY id_lot) AS b ON b.id_lot = l.id
+    LEFT JOIN (SELECT id_lot, MAX(amount) AS max FROM bid GROUP BY id_lot) AS b ON b.id_lot = l.id
     WHERE l.id = ?";
     $lot_info = selectByIdFromDB($link, $sql, $id);
+    $lot_info['max'] > $lot_info['price'] ? $lot_info['price'] = $lot_info['max'] : $lot_info['price'];
     if ($lot_info) {
         $content = include_template('lot.php',
           ['categories' => $categories, 'lot_info' => $lot_info]);
