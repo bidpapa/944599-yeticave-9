@@ -19,8 +19,13 @@ function selectByIdFromDB($link, $sql, $id)
     mysqli_stmt_bind_param($stmt, 'i', $id);
     mysqli_stmt_execute($stmt);
     $row = mysqli_stmt_get_result($stmt);
-    $array = mysqli_fetch_assoc($row);
-    return $array;
+    if($row) {
+        $array = mysqli_fetch_assoc($row);
+        return $array;
+    }
+    else {
+        showError(mysqli_error($link));
+    }
 }
 
 function showError($error)
