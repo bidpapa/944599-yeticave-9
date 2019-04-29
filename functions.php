@@ -13,6 +13,21 @@ function returnArrayFromDB($link, $sql, $fetch_type = MYSQLI_NUM)
     }
 }
 
+function selectByIdFromDB($link, $sql, $id)
+{
+    $stmt = mysqli_prepare($link, $sql);
+    mysqli_stmt_bind_param($stmt, 'i', $id);
+    mysqli_stmt_execute($stmt);
+    $row = mysqli_stmt_get_result($stmt);
+    if($row) {
+        $array = mysqli_fetch_assoc($row);
+        return $array;
+    }
+    else {
+        showError(mysqli_error($link));
+    }
+}
+
 function showError($error)
 {
     $content = include_template('error.php', ['error' => $error]);
@@ -55,4 +70,19 @@ function timeToEndLessOneHour($end_time)
         return true;
     }
     return false;
+}
+
+function Redirect404($categories, $is_auth, $user_name)
+{
+    header("HTTP/1.1 404 Not Found");
+    $content = include_template('404.php',
+      ['categories' => $categories, 'response_code' => http_response_code()]);
+    $layout_content = include_template('layout.php', [
+      'title'      => 'Страница не найдена',
+      'is_auth'    => $is_auth,
+      'user_name'  => $user_name,
+      'content'    => $content,
+      'categories' => $categories,
+    ]);
+    print($layout_content);
 }
