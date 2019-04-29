@@ -69,8 +69,9 @@ function timeToEndLessOneHour($end_time)
 
 function Redirect404($categories, $is_auth, $user_name)
 {
+    header("HTTP/1.1 404 Not Found");
     $content = include_template('404.php',
-      ['categories' => $categories]);
+      ['categories' => $categories, 'response_code' => http_response_code()]);
     $layout_content = include_template('layout.php', [
       'title'      => 'Страница не найдена',
       'is_auth'    => $is_auth,
