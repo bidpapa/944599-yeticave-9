@@ -58,11 +58,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
             header("Location: lot.php?id=$id");
         }
         elseif (!$res) {
-            try {
-                throw new Exception($link->error);
-            } catch (Exception $e) {
-                echo 'Caught exception: ',  $e->getMessage(), "\n";
-            }
+            showError(mysqli_error($link));
         }
     }
 }
