@@ -102,8 +102,8 @@ class Validator
     public function loadImage()
     {
         if (!$this->error) {
-            move_uploaded_file($this->img_tmp_name, 'img/' . $this->img_path);
-            return $img_name = 'img/' . $this->img_path;
+            move_uploaded_file($this->img_tmp_name, 'uploads/' . $this->img_path);
+            return $img_name = 'uploads/' . $this->img_path;
         }
     }
 
