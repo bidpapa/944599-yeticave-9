@@ -52,8 +52,12 @@ function timeToEnd($end_time)
     $now = date_create();
     $end_time = date_create($end_time);
     $interval = date_diff($now, $end_time);
-    if ($interval->d > 0) {
-        $hours = $interval->h + ($interval->d * 24) . ':'
+    if ($now > $end_time) {
+        return 'Окончен';
+    }
+    elseif ($interval->d > 0 || $interval->m > 0) {
+        $days = $interval->format('%a');
+        $hours = $interval->h + ($days * 24) . ':'
           . $interval->format('%I');
         return $hours;
     }
@@ -85,4 +89,17 @@ function Redirect404($categories, $is_auth, $user_name)
       'categories' => $categories,
     ]);
     print($layout_content);
+}
+
+function createSelectList($arrayData, $selectedValue = '') {
+    $html = '';
+    foreach ($arrayData as $row) {
+        if ($row[0] == $selectedValue) {
+            $html .= '<option value="'.$row[0].'" selected>'.$row[1].'</option>';
+        }
+        else {
+            $html .= '<option value="'.$row[0].'">'.$row[1].'</option>';
+        }
+    }
+    return $html;
 }
