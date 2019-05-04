@@ -34,7 +34,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
         $lot[$key] = htmlspecialchars($value);
     }
 
-    $validator = new Validator($required_fields, $integer_fields, $date_fields, $img_field, $lot, $_FILES);
+    $validator = new Validator($required_fields, $integer_fields, null, $date_fields, $img_field, $lot, $_FILES);
     $error = $validator->getErrors();
     $img_name = $validator->loadImage();
 
@@ -52,23 +52,26 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
           $id_creator
         ];
         $stmt = db_get_prepare_stmt($link, $sql, $data);
-        $res = mysqli_stmt_execute($stmt);
-        if ($res) {
+        $result = mysqli_stmt_execute($stmt);
+        if ($result) {
             $id = mysqli_insert_id($link);
             header("Location: lot.php?id=$id");
         }
-        elseif (!$res) {
+        else {
             showError(mysqli_error($link));
         }
     }
 }
 
+$navigation = include_template('navigation.php',
+  ['categories' => $categories]);
 $content = include_template('add.php',
-  ['categories' => $categories, 'error' => $error, 'lot' => $lot]);
+  ['error' => $error, 'lot' => $lot]);
 $layout_content = include_template('layout.php', [
   'title'      => 'Добавление лота',
   'is_auth'    => $is_auth,
   'user_name'  => $user_name,
+  'navigation' => $navigation,
   'content'    => $content,
   'categories' => $categories,
 ]);

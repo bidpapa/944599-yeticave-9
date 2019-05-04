@@ -7,6 +7,8 @@ class Validator
 
     private $integer_fields;
 
+    private $email_fields;
+
     private $date_fields;
 
     private $img_field;
@@ -24,6 +26,7 @@ class Validator
     function __construct(
       $required_fields,
       $integer_fields,
+      $email_fields,
       $date_fields,
       $img_field,
       $values,
@@ -31,6 +34,7 @@ class Validator
     ) {
         $this->required_fields = $required_fields;
         $this->integer_fields = $integer_fields;
+        $this->email_fields = $email_fields;
         $this->date_fields = $date_fields;
         $this->img_field = $img_field;
         $this->values = $values;
@@ -57,10 +61,21 @@ class Validator
         }
     }
 
+    private function isEmailFieldValid()
+    {
+        foreach ($this->email_fields as $key => $value) {
+            if (!filter_var($this->values[$key], FILTER_VALIDATE_EMAIL)
+              && !empty($this->values[$key])
+            ) {
+                $this->error[$key] = $value;
+            }
+        }
+    }
+
     private function isDateCorrect()
     {
         foreach ($this->date_fields as $key => $value) {
-            if (!$this->is_date_valid($this->values[$key])
+            if (!$this->isDateValid($this->values[$key])
               && !empty($this->values[$key])
             ) {
                 $this->error[$key] = $value;
@@ -73,7 +88,7 @@ class Validator
         }
     }
 
-    private function is_date_valid(string $date): bool
+    private function isDateValid(string $date): bool
     {
         $format_to_check = 'Y-m-d';
         $dateTimeObj = date_create_from_format($format_to_check, $date);
@@ -109,10 +124,21 @@ class Validator
 
     public function getErrors()
     {
-        $this->checkImage($this->file, $this->img_field);
-        $this->isFieldEmpty();
-        $this->isInteger();
-        $this->isDateCorrect();
+        if ($this->img_field) {
+            $this->checkImage($this->file, $this->img_field);
+        }
+        if ($this->required_fields) {
+             $this->isFieldEmpty();
+        }
+        if ($this->integer_fields) {
+            $this->isInteger();
+        }
+        if ($this->email_fields) {
+            $this->isEmailFieldValid();
+        }
+        if ($this->date_fields) {
+            $this->isDateCorrect();
+        }
         return $this->error;
     }
 
