@@ -7,7 +7,7 @@
     </div>
     <div class="form__item <?php if($error['password']):?> form__item--invalid <?php endif; ?>">
         <label for="password">Пароль <sup>*</sup></label>
-        <input id="password" type="password" name="password" placeholder="Введите пароль" value="<?= $registration['password'] ?>">
+        <input id="password" type="password" name="password" placeholder="Введите пароль" value="">
         <span class="form__error"><?= $error['password'] ?></span>
     </div>
     <div class="form__item <?php if($error['name']):?> form__item--invalid <?php endif; ?>">

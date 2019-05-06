@@ -94,12 +94,29 @@ function Redirect404($categories, $is_auth, $user_name)
     header("HTTP/1.1 404 Not Found");
     $navigation = include_template('navigation.php',
       ['categories' => $categories]);
-    $content = include_template('404.php',
+    $content = include_template('40_.php',
       ['response_code' => http_response_code()]);
     $layout_content = include_template('layout.php', [
       'title'      => 'Страница не найдена',
       'is_auth'    => $is_auth,
       'user_name'  => $user_name,
+      'navigation' => $navigation,
+      'content'    => $content,
+      'categories' => $categories,
+    ]);
+    print($layout_content);
+}
+
+function Redirect403($categories)
+{
+    header("HTTP/1.1 403 Forbidden");
+    $navigation = include_template('navigation.php',
+      ['categories' => $categories]);
+    $content = include_template('40_.php',
+      ['response_code' => http_response_code()]);
+    $layout_content = include_template('layout.php', [
+      'title'      => 'Нет доступа',
+      'is_auth'    => false,
       'navigation' => $navigation,
       'content'    => $content,
       'categories' => $categories,

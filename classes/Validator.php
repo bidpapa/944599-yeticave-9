@@ -142,4 +142,17 @@ class Validator
         return $this->error;
     }
 
+    public function getValues()
+    {
+        $array = [];
+        foreach ($this->values as $key => $value) {
+            if ($key != 'password') {
+                $array[$key] = htmlspecialchars($value);
+            } else {
+                $array[$key] = password_hash($value, PASSWORD_DEFAULT);
+            }
+        }
+        return $array;
+    }
+
 }

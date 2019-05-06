@@ -1,14 +1,19 @@
 <?php
+session_start();
+
 require_once 'init.php';
 require_once 'helpers.php';
 require_once 'functions.php';
 require_once 'classes/Validator.php';
 
-$is_auth = rand(0, 1);
-$user_name = 'Дмитрий';
-$id_creator = 1;
 $sql = "SELECT * FROM category ORDER BY id";
 $categories = returnArrayFromDB($link, $sql);
+
+if ($_SESSION) {
+
+$is_auth = true;
+$user_name = $_SESSION['name'];
+$id_creator = $_SESSION['id'];
 
 if($_SERVER['REQUEST_METHOD'] == 'POST') {
     $required_fields = [
@@ -30,13 +35,10 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
       'lot-img' => 'Загрузите картинку в формате JPG, JPEG или PNG'
     ];
 
-    foreach ($_POST as $key => $value) {
-        $lot[$key] = htmlspecialchars($value);
-    }
-
-    $validator = new Validator($required_fields, $integer_fields, null, $date_fields, $img_field, $lot, $_FILES);
+    $validator = new Validator($required_fields, $integer_fields, null, $date_fields, $img_field, $_POST, $_FILES);
     $error = $validator->getErrors();
     $img_name = $validator->loadImage();
+    $lot = $validator->getValues();
 
     if (!$error) {
         $sql = "INSERT INTO lot (name, description, id_category, image, start_price, bid_step, end_date, id_creator)
@@ -66,7 +68,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 $navigation = include_template('navigation.php',
   ['categories' => $categories]);
 $content = include_template('add.php',
-  ['error' => $error, 'lot' => $lot]);
+  ['categories' => $categories, 'error' => $error, 'lot' => $lot]);
 $layout_content = include_template('layout.php', [
   'title'      => 'Добавление лота',
   'is_auth'    => $is_auth,
@@ -77,3 +79,6 @@ $layout_content = include_template('layout.php', [
 ]);
 
 print($layout_content);
+} else {
+    Redirect403($categories);
+}
