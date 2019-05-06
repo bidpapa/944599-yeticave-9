@@ -19,12 +19,15 @@ if (isset($_GET['id']) && $_GET['id'] > 0) {
     $lot_info = selectByIdFromDB($link, $sql, $id);
     $lot_info['max'] > $lot_info['price'] ? $lot_info['price'] = $lot_info['max'] : $lot_info['price'];
     if ($lot_info) {
+        $navigation = include_template('navigation.php',
+          ['categories' => $categories]);
         $content = include_template('lot.php',
-          ['categories' => $categories, 'lot_info' => $lot_info]);
+          ['lot_info' => $lot_info]);
         $layout_content = include_template('layout.php', [
           'title'      => $lot_info['name'],
           'is_auth'    => $is_auth,
           'user_name'  => $user_name,
+          'navigation' => $navigation,
           'content'    => $content,
           'categories' => $categories,
         ]);

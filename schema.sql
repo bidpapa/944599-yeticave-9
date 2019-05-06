@@ -12,14 +12,14 @@ CREATE TABLE user
 (
   id int NOT NULL AUTO_INCREMENT,
   name varchar(50) NOT NULL,
-  password varchar(50) NOT NULL,
+  password varchar(255) NOT NULL,
   email varchar(50) NOT NULL,
   contact varchar(255) NOT NULL,
   avatar varchar(50),
   reg_date datetime DEFAULT NOW(),
   PRIMARY KEY (id),
   INDEX (password),
-  UNIQUE INDEX (name, email)
+  UNIQUE INDEX (email)
 );
 
 CREATE TABLE lot
