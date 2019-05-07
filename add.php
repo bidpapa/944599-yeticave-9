@@ -9,7 +9,7 @@ require_once 'classes/Validator.php';
 $sql = "SELECT * FROM category ORDER BY id";
 $categories = returnArrayFromDB($link, $sql);
 
-if ($_SESSION) {
+if (isset($_SESSION['name'])) {
 
 $is_auth = true;
 $user_name = $_SESSION['name'];

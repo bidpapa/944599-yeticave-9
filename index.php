@@ -5,7 +5,7 @@ require_once 'helpers.php';
 require_once 'functions.php';
 $link = require_once 'init.php';
 
-if ($_SESSION)
+if (isset($_SESSION['name']))
 {
 $is_auth = true;
 $user_name = $_SESSION['name'];
