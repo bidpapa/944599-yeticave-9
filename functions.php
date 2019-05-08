@@ -62,13 +62,29 @@ function formatNumber($number)
     return $number . ' ₽';
 }
 
+function timeAfterBet($creation_date)
+{
+    $now = date_create();
+    $creation_time = date_create($creation_date);
+    $interval = date_diff($now, $creation_time);
+    if ($interval->h < 1) {
+        return $interval->format('%i').' минут назад';
+    } elseif ($interval->h >= 1 && $creation_time >= date_create('today')) {
+        return $interval->format('%h').' часов назад';
+    } elseif ($creation_time >= date_create('yesterday') && $creation_time < date_create('today')) {
+        return 'Вчера, в '. $creation_time->format('H:i');
+    } else {
+        return $creation_time->format('d.m.y'). ' в ' . $creation_time->format('H:i');
+    }
+}
+
 function timeToEnd($end_time)
 {
     $now = date_create();
     $end_time = date_create($end_time);
     $interval = date_diff($now, $end_time);
     if ($now > $end_time) {
-        return 'Окончен';
+        return false;
     }
     elseif ($interval->d > 0 || $interval->m > 0) {
         $days = $interval->format('%a');
@@ -84,6 +100,14 @@ function timeToEndLessOneHour($end_time)
     $now = time();
     $end_time = strtotime($end_time);
     if (($end_time - $now) <= 3600) {
+        return true;
+    }
+    return false;
+}
+
+function isWinningBid($bid, $max_bid)
+{
+    if ($bid == $max_bid) {
         return true;
     }
     return false;

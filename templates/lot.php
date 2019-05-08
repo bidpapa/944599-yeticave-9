@@ -11,39 +11,45 @@
             <p class="lot-item__description"><?= $lot_info['description'] ?></p>
         </div>
         <div class="lot-item__right">
-            <?php
-            if ($is_auth === true):
-            ?>
             <div class="lot-item__state">
                 <div class="lot-item__timer timer <?php if(timeToEndLessOneHour($lot_info['time'])): ?>timer--finishing<?php endif; ?>">
-                    <?= timeToEnd($lot_info['time']) ?>
+                    <?= $lot_info['status'] ?>
                 </div>
                 <div class="lot-item__cost-state">
                     <div class="lot-item__rate">
                         <span class="lot-item__amount">Текущая цена</span>
                         <span class="lot-item__cost"><?= formatNumber($lot_info['price']) ?></span>
                     </div>
+                    <?php
+                    if (timeToEnd($lot_info['time']) !== false):
+                    ?>
                     <div class="lot-item__min-cost">
                         Мин. ставка <span><?= formatNumber($lot_info['price']+$lot_info['bid_step']) ?></span>
                     </div>
+                    <?php
+                    endif;
+                    ?>
                 </div>
-                <!--<form class="lot-item__form"
-                      action="https://echo.htmlacademy.ru" method="post"
+                <?php
+                if ($show_bet_block !== false):
+                ?>
+                <form class="lot-item__form"
+                      action="lot.php?id=<?= $lot_info['id'] ?>" method="post"
                       autocomplete="off">
                     <p
-                      class="lot-item__form-item form__item form__item--invalid">
+                      class="lot-item__form-item form__item <?php if ($error['cost']): ?> form__item--invalid <?php endif; ?>">
                         <label for="cost">Ваша ставка</label>
                         <input id="cost" type="text" name="cost"
-                               placeholder="12 000">
+                               placeholder="<?= formatNumber($lot_info['price']+$lot_info['bid_step']) ?>">
                         <span
-                          class="form__error">Введите наименование лота</span>
+                          class="form__error"><?= $error['cost'] ?></span>
                     </p>
                     <button type="submit" class="button">Сделать ставку</button>
-                </form>-->
+                </form>
+                <?php
+                endif;
+                ?>
             </div>
-            <?php
-            endif;
-            ?>
             <!--<div class="history">
                 <h3>История ставок (<span>10</span>)</h3>
                 <table class="history__list">
