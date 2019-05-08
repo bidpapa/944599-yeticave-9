@@ -25,9 +25,12 @@ if (isset($_GET['id']) && $_GET['id'] > 0) {
     c.name AS category_name, l.start_price AS price, b.max, b.id_user
     FROM lot AS l
     INNER JOIN category AS c ON l.id_category = c.id
-    LEFT JOIN (SELECT id_lot, id_user, MAX(amount) AS max FROM bid GROUP BY id_lot, id_user) AS b ON b.id_lot = l.id    
+    LEFT JOIN (SELECT id_lot, id_user, MAX(amount) AS max FROM bid WHERE id_lot = ? GROUP BY id_user, id_lot ORDER BY max DESC LIMIT 1) AS b ON b.id_lot = l.id    
     WHERE l.id = ?";
-    $lot_info = selectByIdFromDB($link, $sql, $id);
+    $stmt = db_get_prepare_stmt($link, $sql, [$id, $id]);
+    mysqli_stmt_execute($stmt);
+    $row = mysqli_stmt_get_result($stmt);
+    $lot_info = mysqli_fetch_assoc($row);
 
     if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_SESSION['name'])) {
         $required_fields = [
