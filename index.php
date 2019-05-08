@@ -1,12 +1,17 @@
 <?php
+session_start();
 
 require_once 'helpers.php';
 require_once 'functions.php';
 $link = require_once 'init.php';
 
-$is_auth = rand(0, 1);
-
-$user_name = 'Дмитрий'; // укажите здесь ваше имя
+if (isset($_SESSION['name']))
+{
+$is_auth = true;
+$user_name = $_SESSION['name'];
+} else {
+    $is_auth = false;
+}
 
 if (!$link) {
     showError(mysqli_connect_error());

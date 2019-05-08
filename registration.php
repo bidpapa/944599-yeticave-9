@@ -19,12 +19,9 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
       'email' => 'Введите e-mail в корректном формате'
     ];
 
-    foreach ($_POST as $key => $value) {
-        $registration[$key] = htmlspecialchars($value);
-    }
-
-    $validator = new Validator($required_fields, null, $email_fields, null, null, $registration, null);
+    $validator = new Validator($required_fields, null, $email_fields, null, null, $_POST, null);
     $error = $validator->getErrors();
+    $registration = $validator->getValues();
 
     $sql = "SELECT COUNT(email) FROM user WHERE email = ?";
     $stmt = db_get_prepare_stmt($link, $sql, [$registration['email']]);
@@ -36,13 +33,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
         $sql
           = "INSERT INTO user (email, password, name, contact)
     VALUES(?,?,?,?)";
-        $data = [
-          $registration['email'],
-          password_hash($registration['password'], PASSWORD_DEFAULT),
-          $registration['name'],
-          $registration['message'],
-        ];
-        $stmt = db_get_prepare_stmt($link, $sql, $data);
+        $stmt = db_get_prepare_stmt($link, $sql, $registration);
         $result = mysqli_stmt_execute($stmt);
         if ($result) {
             header("Location: login.php");

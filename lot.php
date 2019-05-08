@@ -1,10 +1,18 @@
 <?php
+session_start();
+
 require_once 'init.php';
 require_once 'helpers.php';
 require_once 'functions.php';
 
-$is_auth = rand(0, 1);
-$user_name = 'Дмитрий';
+if (isset($_SESSION['name']))
+{
+    $is_auth = true;
+    $user_name = $_SESSION['name'];
+} else {
+    $is_auth = false;
+}
+
 $sql = "SELECT * FROM category ORDER BY id";
 $categories = returnArrayFromDB($link, $sql);
 
@@ -22,7 +30,7 @@ if (isset($_GET['id']) && $_GET['id'] > 0) {
         $navigation = include_template('navigation.php',
           ['categories' => $categories]);
         $content = include_template('lot.php',
-          ['lot_info' => $lot_info]);
+          ['lot_info' => $lot_info, 'is_auth' => $is_auth]);
         $layout_content = include_template('layout.php', [
           'title'      => $lot_info['name'],
           'is_auth'    => $is_auth,
