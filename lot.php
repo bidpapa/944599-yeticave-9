@@ -29,7 +29,7 @@ if (isset($_GET['id']) && $_GET['id'] > 0) {
     LEFT JOIN bid AS b1 ON b1.amount = b.max
     WHERE l.id = ?";
     $lot_info = selectByIdFromDB($link, $sql, $id);
-print_r($lot_info);
+
     if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_SESSION['name'])) {
         $required_fields = [
           'cost' => 'Введите сумму'
