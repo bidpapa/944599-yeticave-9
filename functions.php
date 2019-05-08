@@ -62,22 +62,6 @@ function formatNumber($number)
     return $number . ' ₽';
 }
 
-function timeAfterBet($creation_date)
-{
-    $now = date_create();
-    $creation_time = date_create($creation_date);
-    $interval = date_diff($now, $creation_time);
-    if ($interval->h < 1) {
-        return $interval->format('%i').' минут назад';
-    } elseif ($interval->h >= 1 && $creation_time >= date_create('today')) {
-        return $interval->format('%h').' часов назад';
-    } elseif ($creation_time >= date_create('yesterday') && $creation_time < date_create('today')) {
-        return 'Вчера, в '. $creation_time->format('H:i');
-    } else {
-        return $creation_time->format('d.m.y'). ' в ' . $creation_time->format('H:i');
-    }
-}
-
 function timeToEnd($end_time)
 {
     $now = date_create();
