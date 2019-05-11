@@ -68,7 +68,7 @@ function timeToEnd($end_time)
     $end_time = date_create($end_time);
     $interval = date_diff($now, $end_time);
     if ($now > $end_time) {
-        return 'Окончен';
+        return false;
     }
     elseif ($interval->d > 0 || $interval->m > 0) {
         $days = $interval->format('%a');
@@ -84,6 +84,14 @@ function timeToEndLessOneHour($end_time)
     $now = time();
     $end_time = strtotime($end_time);
     if (($end_time - $now) <= 3600) {
+        return true;
+    }
+    return false;
+}
+
+function isWinningBid($bid, $max_bid)
+{
+    if ($bid == $max_bid) {
         return true;
     }
     return false;
