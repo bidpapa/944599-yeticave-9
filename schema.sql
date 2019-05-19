@@ -38,7 +38,8 @@ CREATE TABLE lot
   PRIMARY KEY (id),
   FOREIGN KEY (id_creator) REFERENCES user(id),
   FOREIGN KEY (id_category) REFERENCES category(id),
-  INDEX (end_date, id_creator, id_winner)
+  INDEX (end_date, id_creator, id_winner),
+  FULLTEXT (name, description)
 );
 
 CREATE TABLE bid
