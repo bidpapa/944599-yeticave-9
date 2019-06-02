@@ -1,0 +1,13 @@
+{
+    "name": "vendor/yeticave",
+    "description": "some desc",
+    "authors": [
+        {
+            "name": "Dmitry Gerasimov",
+            "email": "gerasimov72@gmail.com"
+        }
+    ],
+    "require": {
+        "swiftmailer/swiftmailer": "^6.2"
+    }
+}
