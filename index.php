@@ -4,6 +4,7 @@ session_start();
 require_once 'helpers.php';
 require_once 'functions.php';
 $link = require_once 'init.php';
+require_once 'getwinner.php';
 
 if (isset($_SESSION['name']))
 {
