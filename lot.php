@@ -5,6 +5,7 @@ require_once 'init.php';
 require_once 'helpers.php';
 require_once 'functions.php';
 require_once 'classes/Validator.php';
+require_once 'classes/Timer.php';
 
 if (isset($_SESSION['name']))
 {
@@ -29,6 +30,14 @@ if (isset($_GET['id']) && $_GET['id'] > 0) {
     LEFT JOIN bid AS b1 ON b1.amount = b.max
     WHERE l.id = ?";
     $lot_info = selectByIdFromDB($link, $sql, $id);
+
+    $sql = "SELECT u.name, b.creation_date, b.amount FROM bid AS b 
+    LEFT JOIN user AS u ON b.id_user = u.id 
+    WHERE b.id_lot = ? ORDER BY b.creation_date DESC";
+    $stmt = db_get_prepare_stmt($link, $sql, [$id]);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    $bets = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
     if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_SESSION['name'])) {
         $required_fields = [
@@ -80,10 +89,18 @@ if (isset($_GET['id']) && $_GET['id'] > 0) {
             $lot_info['status'] = timeToEnd($lot_info['time']);
         }
 
+        $timer = new Timer;
+
         $navigation = include_template('navigation.php',
           ['categories' => $categories]);
-        $content = include_template('lot.php',
-          ['error' => $error, 'show_bet_block' => $show_bet_block, 'lot_info' => $lot_info, 'is_auth' => $is_auth]);
+        $content = include_template('lot.php', [
+          'error' => $error,
+          'show_bet_block' => $show_bet_block,
+          'lot_info' => $lot_info,
+          'bets' => $bets,
+          'timer' => $timer,
+          'is_auth' => $is_auth
+        ]);
         $layout_content = include_template('layout.php', [
           'title'      => $lot_info['name'],
           'is_auth'    => $is_auth,
