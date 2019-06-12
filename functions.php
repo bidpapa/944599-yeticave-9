@@ -105,6 +105,7 @@ function Redirect404($categories, $is_auth, $user_name)
     $content = include_template('40_.php',
       ['response_code' => http_response_code()]);
     $layout_content = include_template('layout.php', [
+      'container'  => '',
       'title'      => 'Страница не найдена',
       'is_auth'    => $is_auth,
       'user_name'  => $user_name,
@@ -123,6 +124,7 @@ function Redirect403($categories)
     $content = include_template('40_.php',
       ['response_code' => http_response_code()]);
     $layout_content = include_template('layout.php', [
+      'container'  => '',
       'title'      => 'Нет доступа',
       'is_auth'    => false,
       'navigation' => $navigation,

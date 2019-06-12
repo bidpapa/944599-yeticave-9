@@ -14,6 +14,8 @@ if (isset($_SESSION['name']))
     $user_id = $_SESSION['id'];
 } else {
     $is_auth = false;
+    $user_name = '';
+    $user_id = null;
 }
 
 $sql = "SELECT * FROM category ORDER BY id";
@@ -52,6 +54,8 @@ if(isset($_GET['search'])) {
                                                'pages_count' => $pages_count,
                                                'cur_page' => $cur_page]);
     $layout_content = include_template('layout.php', [
+      'title'      => 'Поиск по сайту',
+      'container'  => '',
       'is_auth'    => $is_auth,
       'user_name'  => $user_name,
       'navigation' => $navigation,

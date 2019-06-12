@@ -1,6 +1,6 @@
 <div class="container">
     <section class="lots">
-        <h2>Все лоты в категории <span><?= $lots[0]['category'] ?></span></h2>
+        <?php if ($lots): ?><h2>Все лоты в категории <span><?= $lots[0]['category'] ?></span></h2><?php  endif; ?>
         <?php if ($lots): ?>
         <ul class="lots__list">
             <?php foreach ($lots as $lot): ?>

@@ -14,6 +14,8 @@ if (isset($_SESSION['name'])) {
 $is_auth = true;
 $user_name = $_SESSION['name'];
 $id_creator = $_SESSION['id'];
+$error = [];
+$lot = ['message' => '', 'category' => '', 'lot-name' => '', 'lot-rate' => '', 'lot-step' => '', 'lot-date' => ''];
 
 if($_SERVER['REQUEST_METHOD'] == 'POST') {
     $required_fields = [
@@ -36,6 +38,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
     ];
 
     $validator = new Validator($required_fields, $integer_fields, null, $date_fields, $img_field, $_POST, $_FILES);
+    $validator->check_category = true;
     $error = $validator->getErrors();
     $img_name = $validator->loadImage();
     $lot = $validator->getValues();
@@ -70,6 +73,7 @@ $navigation = include_template('navigation.php',
 $content = include_template('add.php',
   ['categories' => $categories, 'error' => $error, 'lot' => $lot]);
 $layout_content = include_template('layout.php', [
+  'container'  => '',
   'title'      => 'Добавление лота',
   'is_auth'    => $is_auth,
   'user_name'  => $user_name,

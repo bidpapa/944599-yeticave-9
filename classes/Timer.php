@@ -11,8 +11,7 @@ class Timer
             return $interval->format('%i '). $this->getNounPluralForm($interval->format('%i'), 'минуту', 'минуты', 'минут')  .  ' назад';
         } elseif ($interval->h == 1 && $creation_time >= date_create('today')) {
             return 'Час назад';
-        }
-        elseif ($interval->h > 1 && $creation_time >= date_create('today')) {
+        } elseif ($interval->h > 1 && $creation_time >= date_create('today')) {
             return $interval->format('%h '). $this->getNounPluralForm($interval->format('%h'), 'час', 'часа', 'часов')  .' назад';
         } elseif ($creation_time >= date_create('yesterday') && $creation_time < date_create('today')) {
             return 'Вчера, в '. $creation_time->format('H:i');

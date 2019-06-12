@@ -1,5 +1,6 @@
 <section class="rates container">
     <h2>Мои ставки</h2>
+    <?php if(!$bids): ?><span>Вы еще не делали ставок на сайте</span><?php endif; ?>
     <table class="rates__list">
         <?php foreach ($bids as $bid): ?>
         <tr class="rates__item <?php if(!timeToEnd($bid['end_date']) && isWinningBid($bid['amount'], $bid['max'])): ?>rates__item--win<?php elseif(!timeToEnd($bid['end_date'])): ?>rates__item--end<?php endif; ?>">

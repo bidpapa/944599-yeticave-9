@@ -9,6 +9,7 @@ require_once 'classes/Timer.php';
 
 $sql = "SELECT * FROM category ORDER BY id";
 $categories = returnArrayFromDB($link, $sql);
+$error = [];
 
 if (isset($_SESSION['name'])) {
     $is_auth = true;
@@ -26,24 +27,22 @@ if (isset($_SESSION['name'])) {
 
     $bids = returnArrayFromDB($link, $sql, MYSQLI_ASSOC);
 
-    if ($bids) {
-        $timer = new Timer;
-        $navigation = include_template('navigation.php',
-          ['categories' => $categories]);
-        $content = include_template('my_bets.php',
-          ['error' => $error, 'bids' => $bids, 'timer' => $timer, 'is_auth' => $is_auth]);
-        $layout_content = include_template('layout.php', [
-          'title'      => 'Мои ставки',
-          'is_auth'    => $is_auth,
-          'user_name'  => $user_name,
-          'navigation' => $navigation,
-          'content'    => $content,
-          'categories' => $categories,
-        ]);
-        print($layout_content);
-    } else {
-        Redirect404($categories, $is_auth, $user_name);
-    }
+    $timer = new Timer;
+    $navigation = include_template('navigation.php',
+      ['categories' => $categories]);
+    $content = include_template('my_bets.php',
+      ['error' => $error, 'bids' => $bids, 'timer' => $timer, 'is_auth' => $is_auth]);
+    $layout_content = include_template('layout.php', [
+      'container'  => '',
+      'title'      => 'Мои ставки',
+      'is_auth'    => $is_auth,
+      'user_name'  => $user_name,
+      'navigation' => $navigation,
+      'content'    => $content,
+      'categories' => $categories,
+    ]);
+    print($layout_content);
+
 } else {
     Redirect403($categories);
 }

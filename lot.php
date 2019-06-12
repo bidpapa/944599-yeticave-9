@@ -14,7 +14,10 @@ if (isset($_SESSION['name']))
     $user_id = $_SESSION['id'];
 } else {
     $is_auth = false;
+    $user_name = '';
+    $user_id = null;
 }
+$error = [];
 
 $sql = "SELECT * FROM category ORDER BY id";
 $categories = returnArrayFromDB($link, $sql);
@@ -75,6 +78,7 @@ if (isset($_GET['id']) && $_GET['id'] > 0) {
     if ($lot_info) {
         $lot_info['max'] > $lot_info['price'] ?
           $lot_info['price'] = $lot_info['max'] : $lot_info['price'];
+        $show_bet_block = true;
         if ($lot_info['id_creator'] === $user_id
           || $lot_info['id_user'] === $user_id
           || timeToEnd($lot_info['time']) === false
@@ -102,6 +106,7 @@ if (isset($_GET['id']) && $_GET['id'] > 0) {
           'is_auth' => $is_auth
         ]);
         $layout_content = include_template('layout.php', [
+          'container'  => '',
           'title'      => $lot_info['name'],
           'is_auth'    => $is_auth,
           'user_name'  => $user_name,

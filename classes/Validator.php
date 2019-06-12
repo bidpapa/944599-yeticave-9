@@ -23,6 +23,8 @@ class Validator
 
     private $img_path;
 
+    public $check_category = false;
+
     function __construct(
       $required_fields,
       $integer_fields,
@@ -88,6 +90,14 @@ class Validator
         }
     }
 
+    private function categoryCheck()
+    {
+        $allowed_categories = [1, 2, 3, 4, 5, 6];
+        if (!in_array((int)$this->values['category'], $allowed_categories)) {
+                $this->error['category'] = 'Вы не можете добавить товар в эту категорию';
+            }
+    }
+
     private function isDateValid(string $date): bool
     {
         $format_to_check = 'Y-m-d';
@@ -138,6 +148,9 @@ class Validator
         }
         if ($this->date_fields) {
             $this->isDateCorrect();
+        }
+        if ($this->check_category) {
+            $this->categoryCheck();
         }
         return $this->error;
     }

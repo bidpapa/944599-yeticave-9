@@ -12,6 +12,7 @@ if (isset($_SESSION['name']))
     $user_id = $_SESSION['id'];
 } else {
     $is_auth = false;
+    $user_name = '';
 }
 
 $sql = "SELECT * FROM category ORDER BY id";
@@ -39,6 +40,11 @@ if (isset($_GET['id']) && $_GET['id'] > 0) {
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
     $lots = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    $name = '';
+    if ($lots) {
+        $name = $lots[0]['category'];
+    }
+    $title = 'Товары по категории ' . $name;
 
     $navigation = include_template('navigation.php',
       ['categories' => $categories]);
@@ -47,7 +53,8 @@ if (isset($_GET['id']) && $_GET['id'] > 0) {
        'pages_count' => $pages_count,
        'cur_page' => $cur_page]);
     $layout_content = include_template('layout.php', [
-
+      'title'      => $title,
+      'container'  => '',
       'is_auth'    => $is_auth,
       'user_name'  => $user_name,
       'navigation' => $navigation,

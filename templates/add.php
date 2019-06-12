@@ -4,14 +4,14 @@
       ): ?>form--invalid<?php endif; ?>" action="add.php" method="post">
     <h2>Добавление лота</h2>
     <div class="form__container-two">
-        <div class="form__item <?php if ($error['lot-name']): ?> form__item--invalid <?php endif; ?>">
+        <div class="form__item <?php if (isset($error['lot-name'])): ?> form__item--invalid <?php endif; ?>">
             <label for="lot-name">Наименование <sup>*</sup></label>
             <input id="lot-name" type="text" name="lot-name"
                    placeholder="Введите наименование лота"
-                   value="<?= $lot['lot-name'] ?>">
+                   value="<?= htmlspecialchars($lot['lot-name']) ?>">
             <span class="form__error"><?= $error['lot-name'] ?></span>
         </div>
-        <div class="form__item <?php if ($error['category']): ?>form__item--invalid<?php endif; ?>">
+        <div class="form__item <?php if (isset($error['category'])): ?>form__item--invalid<?php endif; ?>">
             <label for="category">Категория <sup>*</sup></label>
             <select id="category" name="category">
                 <option value="">Выберите категорию</option>
@@ -20,12 +20,13 @@
             <span class="form__error"><?= $error['category'] ?></span>
         </div>
     </div>
-    <div class="form__item form__item--wide <?php if ($error['message']): ?>form__item--invalid<?php endif; ?>">
+    <div class="form__item form__item--wide <?php if (isset($error['message'])): ?>form__item--invalid<?php endif; ?>">
         <label for="message">Описание <sup>*</sup></label>
         <textarea id="message" name="message"
-                  placeholder="Напишите описание лота"><?= $lot['message'] ?></textarea>
+                  placeholder="Напишите описание лота"><?= htmlspecialchars($lot['message']) ?></textarea>
         <span class="form__error"><?= $error['message'] ?></span>
     </div>
+        <span class="form__error"><?= $error['message'] ?></span>
     <div class="form__item form__item--file">
         <label>Изображение <sup>*</sup></label>
         <div class="form__input-file <?php if ($error['lot-img']): ?>form__item--invalid<?php endif; ?>">
